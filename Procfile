@@ -1,2 +1,2 @@
-web: unset PORT && bin/rails server
+web: bundle exec rails server -p $PORT
 js: yarn build --watch
