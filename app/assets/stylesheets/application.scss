@@ -15,9 +15,16 @@
 @import "pages/index";
 @import "wards/index";
 
+// Desktop CSS
+@import "desktop/index.scss";
+
+
+p {
+  margin: 0 !important;
+}
 
 body {
-  background: $white_pink;
+  background-color: $dark_blue !important;
 }
 
 ul {

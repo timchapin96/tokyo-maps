@@ -3,7 +3,7 @@
 //   height: inherit;
 // }
 .home-container {
-  height: 100%;
+  height: 100vh;
 }
 
 .landing-banner {
@@ -21,8 +21,8 @@
   z-index: 1;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 450px;
+  width: 100vw;
+  height: inherit;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
@@ -32,14 +32,14 @@
   -moz-transition: opacity 2s ease-in-out;
   transition: opacity 2s ease-in-out;
 }
-.banner-text p {
-  padding-top: 20px;
-}
+
 #banner-title {
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 85px;
+  margin: 0;
+  font-family: 'League Gothic', sans-serif;
+  font-size: 12vw;
   color: white;
   text-shadow: 3px 3px 5px #383838;
+  text-transform: uppercase;
 }
 
 .banner-text {
@@ -48,9 +48,11 @@
   align-items: center;
   color: white;
   text-shadow: 2px 2px #515151;
-}
-.banner-text p {
-  font-size: 20px;
+  padding-top: 2vh;
+  p {
+    font-size: 3vw;
+    opacity: 0.6;
+  }
 }
 
 .transition {
@@ -81,10 +83,4 @@
   -o-transition: height .8s;
   -moz-transition: height .8s;
   transition: height .8s;
-}
-
-.landing-info {
-  font-size: 18px;
-  margin: 2rem 2rem;
-  text-align: center;
 }

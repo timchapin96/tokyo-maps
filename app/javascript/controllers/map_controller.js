@@ -37,8 +37,8 @@ export default class extends Controller {
     let zoom = 0;
     let pitch = 0;
     if (localStorage.repeater === undefined) {
-      center = [139.697988, 35.685098];
-      zoom = 4.99;
+      center = [138.685098, 35.685098];
+      zoom = 4;
       pitch = 65;
     }
     else {
