@@ -90,6 +90,7 @@ gem "byebug"
 gem 'httparty'
 gem "chartkick"
 gem "geocoder"
+gem 'bootstrap', '~> 5.3.0.alpha3'
 
 # slick installation
 
