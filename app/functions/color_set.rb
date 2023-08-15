@@ -49,9 +49,6 @@ class ColorSet
       # 1ldk + safety + pet
       feature["properties"]["one_ldk_sort_color"] = normalize(one_ldk)
       feature["properties"]["one_ldk_safety_sort_color"] = normalize(one_ldk, safety)
-      p feature["properties"]["ward_en"]
-      p one_ldk
-      p pet
       feature["properties"]["one_ldk_pet_sort_color"] = normalize(one_ldk, pet)
       # 2ldk + safety + pet
       feature["properties"]["two_ldk_sort_color"] = normalize(two_ldk)
