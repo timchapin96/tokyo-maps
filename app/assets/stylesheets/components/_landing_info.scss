@@ -1,6 +1,11 @@
 //Mobile version
 $slide-content-height: 15vh;
 
+
+#landing-desc {
+  padding: 20px;
+  text-align: center;
+}
 //show long info in mobile and save short for desktop view.
 .short-info {
   display: none;
