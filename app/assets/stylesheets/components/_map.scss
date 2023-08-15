@@ -5,8 +5,8 @@
 }
 
 .map-full {
-  width: 100%;
-  height: 91vh;
+  width: 100vw;
+  height: 100vh;
   pointer-events: auto;
 
   .mapboxgl-canvas-container {
@@ -32,7 +32,26 @@
 }
 
 .map-show-landing {
-  width: 100%;
-  height: 350px;
+  width: 100svw;
+  height: 25svh;
   pointer-events: none;
+}
+
+.map-mobile {
+  width: 100svw;
+  height: 50svh;
+  pointer-events: auto;
+
+  .mapboxgl-canvas-container {
+    .mapboxgl-canvas {
+      height: 50svh;
+    }
+
+    // .mapboxgl-canvas.transition {
+    //   -webkit-transition: height .8s;
+    //   -o-transition: height .8s;
+    //   -moz-transition: height .8s;
+    //   transition: height .8s;
+    // }
+  }
 }

@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
-
+let mobileView = false;
+let mapZoom = 0;
 export default class extends Controller {
   // Define the values that can be passed to the controller
   static values = {
@@ -18,17 +19,18 @@ export default class extends Controller {
 
 
   connect() { // Initial map on home page with fill, hover, and click to show page features
+    mobileView = window.innerWidth < 769;
     this.mapInitialize();
     this.mapLoad();
-
   }
   mapInitialize() {
+    let mapTarget = this.globusTarget.classList;
     if (localStorage.repeater === 'true') {
       document.querySelector(".banner-content").style.opacity = 0;
       let landing_info = document.querySelector(".landing-info");
       landing_info.remove();
       // this.sortFormTarget.style.display = "block";
-      this.globusTarget.classList.add("map-full");
+      mobileView ? mapTarget.add("map-mobile") : mapTarget.add("map-full");
       this.globusTarget.classList.remove("map-banner");
       //Clear session storage of user selections on refresh or reload
       sessionStorage.clear()
@@ -40,6 +42,11 @@ export default class extends Controller {
       center = [138.685098, 35.685098];
       zoom = 4;
       pitch = 65;
+    }
+    else if (mobileView) {
+      center = [139.749888, 35.649098];
+      zoom = 9.4;
+      pitch = 20;
     }
     else {
       center = [139.749888, 35.639098];
@@ -82,20 +89,22 @@ export default class extends Controller {
   }
 
   flyTokyo() {
+    let mapTarget = this.globusTarget.classList;
+
     document.querySelector(".banner-content").style.display = "none";
     document.querySelector(".landing-info").style.display = "none";
-    document.querySelector(".sort").style.opacity = 1;
-    // let landing_info = document.querySelector(".landing-info");
-    // landing_info.remove();
-    // this.sortFormTarget.style.display = "block";
-    this.globusTarget.classList.add("map-full");
+    document.querySelector(".sort").style.visibility = "visible"
+
+    mobileView ? mapTarget.add("map-mobile") : mapTarget.add("map-full");
+    mobileView ? mapZoom = 2 : mapZoom = 10.85;
+
     this.globusTarget.classList.remove("map-banner");
     this.map.setLayoutProperty('wards-fill', 'visibility', 'visible');
     this.map.setLayoutProperty('wards-outline', 'visibility', 'visible');
-    // this.map.setLayoutProperty('ward-extrusion', 'visibility', 'visible');
+
     this.map.flyTo({
       center: [139.727888, 35.714467],
-      zoom: 10.85,
+      zoom: zoom,
       pitch: 25,
     });
     localStorage.repeater = true;
@@ -426,8 +435,7 @@ export default class extends Controller {
     if (localStorage.repeater === 'true') {
       this.map.setLayoutProperty('wards-fill', 'visibility', 'visible');
       this.map.setLayoutProperty('wards-outline', 'visibility', 'visible');
-      // this.map.setLayoutProperty('ward-extrusion', 'visibility', 'visible');
-      document.querySelector(".sort").style.opacity = 0.6;
+
       let bannerContent = document.querySelector(".banner-content");
       bannerContent.remove();
       this.map.resize()
