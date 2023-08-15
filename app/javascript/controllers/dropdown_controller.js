@@ -7,6 +7,10 @@ export default class extends Controller {
   connect() {
   }
 
+  sortToggle() {
+    document.querySelector(".sort-options").classList.toggle("sort-down");
+  }
+
   toggle(e) {
     let landingCardInfo = e.currentTarget;
     let infoDropdown = landingCardInfo.querySelector(".landing-info-dropdown");

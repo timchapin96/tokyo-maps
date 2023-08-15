@@ -18,13 +18,15 @@ export default class extends Controller {
   hoveredStateId = null;
 
 
-  connect() { // Initial map on home page with fill, hover, and click to show page features
+  connect() {
+    // Initial map on home page with fill, hover, and click to show page features
     mobileView = window.innerWidth < 769;
     this.mapInitialize();
     this.mapLoad();
   }
   mapInitialize() {
     let mapTarget = this.globusTarget.classList;
+
     if (localStorage.repeater === 'true') {
       document.querySelector(".banner-content").style.opacity = 0;
       let landing_info = document.querySelector(".landing-info");
@@ -84,7 +86,7 @@ export default class extends Controller {
       this.click();
       this.userStep();
       this.hover();
-      this.#addUserToMap();
+      // this.#addUserToMap();
     });
   }
 
@@ -96,7 +98,7 @@ export default class extends Controller {
     document.querySelector(".sort").style.visibility = "visible"
 
     mobileView ? mapTarget.add("map-mobile") : mapTarget.add("map-full");
-    mobileView ? mapZoom = 2 : mapZoom = 10.85;
+    mobileView ? mapZoom = 9.4 : mapZoom = 10.85;
 
     this.globusTarget.classList.remove("map-banner");
     this.map.setLayoutProperty('wards-fill', 'visibility', 'visible');
@@ -104,7 +106,7 @@ export default class extends Controller {
 
     this.map.flyTo({
       center: [139.727888, 35.714467],
-      zoom: zoom,
+      zoom: mapZoom,
       pitch: 25,
     });
     localStorage.repeater = true;
@@ -449,12 +451,12 @@ export default class extends Controller {
       }, 500)
     }
   }
-  #addUserToMap() {
-    const customMarker = document.createElement("div")
-    customMarker.innerHTML = this.userValue.marker_html
+  // #addUserToMap() {
+  //   const customMarker = document.createElement("div")
+  //   customMarker.innerHTML = this.userValue.marker_html
 
-    new mapboxgl.Marker(customMarker)
-      .setLngLat(this.userValue.coord)
-      .addTo(this.map)
-  }
+  //   new mapboxgl.Marker(customMarker)
+  //     .setLngLat(this.userValue.coord)
+  //     .addTo(this.map)
+  // }
 }

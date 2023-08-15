@@ -3,17 +3,28 @@
   align-items: center;
   flex-direction: column;
   box-shadow: 2px 2px 5px black;
-  border-radius: 5px;
   -webkit-transition: opacity .5s ease-in-out;
   -o-transition: opacity .5s ease-in-out;
   -moz-transition: opacity .5s ease-in-out;
   transition: opacity .5s ease-in-out;
   background-color: black;
+
+  h2 {
+    text-align: center;
+    color: white;
+  }
+
+  .sort-options {
+    height: 0;
+    overflow-y:hidden;
+  }
 }
-.sort h2 {
-  text-align: center;
-  color: white;
+
+.sort-down{
+  height: 10svh;
+  overflow-y: none;
 }
+
 .rent-button, .other-button, .clear{
   border-style: none;
   background: aliceblue;
@@ -49,6 +60,3 @@
   color:white;
   background: rgb(196, 179, 106);
 }
-
-
-//mobile
