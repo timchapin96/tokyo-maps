@@ -27,12 +27,21 @@ export default class extends Controller {
   mapInitialize() {
     let mapTarget = this.globusTarget.classList;
 
+    //If user has already clicked on homepage explore.
+    //Replace locale storage with query
     if (localStorage.repeater === 'true') {
       document.querySelector(".banner-content").style.opacity = 0;
-      let landing_info = document.querySelector(".landing-info");
-      landing_info.remove();
-      // this.sortFormTarget.style.display = "block";
+      document.querySelector(".landing-info").remove();
+
       mobileView ? mapTarget.add("map-mobile") : mapTarget.add("map-full");
+      if (mobileView) {
+        mapTarget.add("map-mobile");
+      }
+      else {
+        mapTarget.add("map-full");
+        document.querySelector(".sort").remove();
+
+      }
       this.globusTarget.classList.remove("map-banner");
       //Clear session storage of user selections on refresh or reload
       sessionStorage.clear()

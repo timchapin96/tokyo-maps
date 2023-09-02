@@ -1,3 +1,8 @@
+.sort-down {
+  height: auto !important;
+  overflow-y: visible !important;
+}
+
 .sort {
   display: flex;
   align-items: center;
@@ -15,17 +20,17 @@
   }
 
   .sort-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 0;
-    overflow-y:hidden;
+    overflow-y: hidden;
   }
 }
 
-.sort-down{
-  height: 10svh;
-  overflow-y: none;
-}
-
-.rent-button, .other-button, .clear{
+.rent-button,
+.other-button,
+.clear {
   border-style: none;
   background: aliceblue;
   height: 5vh;
@@ -37,26 +42,31 @@
 
 
 }
-.clear:hover {
-  background-color: red;
-  color: white;
-  transition: .2s ease-in-out;
-}
-.rent-buttons button:hover {
-  background: black;
-  color: white;
-  transition: .2s ease-in-out;
-}
-.other-buttons button:hover {
-  background: black;
-  color: white;
-  transition: .2s ease-in-out;
-}
-.selected-rent-target{
+
+// .clear:hover {
+//   background-color: red;
+//   color: white;
+//   transition: .2s ease-in-out;
+// }
+
+// .rent-buttons button:hover {
+//   background: black;
+//   color: white;
+//   transition: .2s ease-in-out;
+// }
+
+// // .other-buttons button:hover {
+// //   background: black;
+// //   color: white;
+// //   transition: .2s ease-in-out;
+// // }
+
+.selected-rent-target {
   color: white;
   background: rgb(59, 59, 148);
 }
-.selected-safety-target{
-  color:white;
+
+.selected-safety-target {
+  color: white;
   background: rgb(196, 179, 106);
 }

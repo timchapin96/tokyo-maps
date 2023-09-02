@@ -7,7 +7,7 @@ export default class extends Controller {
   connect() {
   }
 
-  sortToggle() {
+  sortToggle(e) {
     document.querySelector(".sort-options").classList.toggle("sort-down");
   }
 
