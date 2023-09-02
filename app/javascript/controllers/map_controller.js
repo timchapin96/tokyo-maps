@@ -33,14 +33,12 @@ export default class extends Controller {
       document.querySelector(".banner-content").style.opacity = 0;
       document.querySelector(".landing-info").remove();
 
-      mobileView ? mapTarget.add("map-mobile") : mapTarget.add("map-full");
       if (mobileView) {
         mapTarget.add("map-mobile");
       }
       else {
         mapTarget.add("map-full");
-        document.querySelector(".sort").remove();
-
+        document.querySelector(".sort").classList.replace("sort-mobile", "sort-desktop");
       }
       this.globusTarget.classList.remove("map-banner");
       //Clear session storage of user selections on refresh or reload

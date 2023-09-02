@@ -1,19 +1,19 @@
 
-<div class="sort" data-controller="dropdown">
-  <h2 data-action="touchend->dropdown#sortToggle">Sorting</h2>
+<div class="sort sort-mobile" data-controller="dropdown">
+  <h2 data-action="click->dropdown#sortToggle">Sorting</h2>
   <div class="sort-options">
     <div class="rent-buttons">
-      <button id="one_ldk" class="rent-button" data-action="touchend->map#selectedSort">1LDK</button>
-      <button id="two_ldk" class="rent-button" data-action="touchend->map#selectedSort">2LDK</button>
-      <button id="three_ldk" class="rent-button" data-action="touchend->map#selectedSort">3LDK</button>
+      <button id="one_ldk" class="rent-button" data-action="click->map#selectedSort">1LDK</button>
+      <button id="two_ldk" class="rent-button" data-action="click->map#selectedSort">2LDK</button>
+      <button id="three_ldk" class="rent-button" data-action="click->map#selectedSort">3LDK</button>
     </div>
     <div class="other-buttons">
-      <button class="other-button" id="safety" data-action="touchend->map#selectedSort">Safety</button>
-      <button class="other-button" id="international_schools" data-action="touchend->map#selectedSort">Schools</button>
-      <button class="other-button" id="pet" data-action="touchend->map#selectedSort">Pet Friendly</button>
+      <button class="other-button" id="safety" data-action="click->map#selectedSort">Safety</button>
+      <button class="other-button" id="international_schools" data-action="click->map#selectedSort">Schools</button>
+      <button class="other-button" id="pet" data-action="click->map#selectedSort">Pet Friendly</button>
     </div>
     <div class="clear-button">
-      <button class="clear" id="clear" data-action="touchend->map#selectedSort">Clear</button>
+      <button class="clear" id="clear" data-action="click->map#selectedSort">Clear</button>
     </div>
   </div>
 </div>
