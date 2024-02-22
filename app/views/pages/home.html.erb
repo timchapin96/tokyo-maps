@@ -6,7 +6,10 @@
       <div class="sort">
         <h2>Sorting</h2>
         <div class="rent-buttons">
-          <button id="one_ldk" class="rent-button" data-action="click->map#selectedSort">1LDK</button>
+          <%# <button_to id="one_ldk" class="rent-button" data-action="click->map#selectedSort">1LDK</button_to> %>
+          <%= button_to root_path, data: {"apt"=>"1ldk", "action" =>"click->map#selectedSort"} do %>
+            1LDK
+          <% end %>
           <button id="two_ldk" class="rent-button" data-action="click->map#selectedSort">2LDK</button>
           <button id="three_ldk" class="rent-button" data-action="click->map#selectedSort">3LDK</button>
         </div>

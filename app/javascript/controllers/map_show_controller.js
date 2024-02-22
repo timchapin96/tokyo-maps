@@ -88,7 +88,6 @@ export default class extends Controller {
         data.features.forEach((ward) => {
           if (ward.properties.ward_en == wardName) {
             let wardToggle = `${localStorage.ldkToggle}_sort_color`;
-            console.log(wardToggle);
             // console.log(ward.properties.(eval(wardToggle)));
           }
         })
