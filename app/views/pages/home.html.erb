@@ -3,17 +3,22 @@
   <div id="container" data-controller="map" data-map-areas-value="<%= @areas.to_json %>" data-map-user-value = "<%=@user_address.to_json%>"
     data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
     <div class="landing-banner">
-      <div class="banner-content">
-        <div class="banner-text">
-          <h1 id="banner-title">Tokyo Maps</h1>
-          <p>Discover your perfect Tokyo neighborhood now!</p>
+      <div class="sort">
+        <h2>Sorting</h2>
+        <div class="rent-buttons">
+          <%# <button_to id="one_ldk" class="rent-button" data-action="click->map#selectedSort">1LDK</button_to> %>
+          <%= button_to root_path, data: {"apt"=>"1ldk", "action" =>"click->map#selectedSort"} do %>
+            1LDK
+          <% end %>
+          <button id="two_ldk" class="rent-button" data-action="click->map#selectedSort">2LDK</button>
+          <button id="three_ldk" class="rent-button" data-action="click->map#selectedSort">3LDK</button>
         </div>
-        <button id="fly-to-tokyo" data-action="click->map#flyTokyo">Explore</button>
+        <div class="other-buttons">
+          <button class="other-button" id="safety" data-action="click->map#selectedSort">Safety</button>
+          <button class="other-button" id="international_schools" data-action="click->map#selectedSort">Schools</button>
+          <button class="other-button" id="pet" data-action="click->map#selectedSort">Pet Friendly</button>
+        </div>
+        <div class="clear-button">
+          <button class="clear" id="clear" data-action="click->map#selectedSort">Clear</button>
+        </div>
       </div>
-      <div class="gradient"></div>
-      <div class="map-banner" data-map-target="globus"></div>
-    </div>
-    <%= render "partials/sort" %>
-  </div>
-  <%= render '/partials/landing-info' %>
-</div>
