@@ -22,4 +22,7 @@ application.register("ward-action", WardActionController)
 import WardSubscriptionController from "./ward_subscription_controller"
 application.register("ward-subscription", WardSubscriptionController)
 
+import Dropdown from "./dropdown_controller";
+application.register("dropdown", Dropdown);
+
 import "chartkick/chart.js"

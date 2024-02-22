@@ -1,4 +1,7 @@
-import { Controller } from '@hotwired/stimulus'
+
+import { Controller } from "@hotwired/stimulus";
+let mobileView = false;
+let mapZoom = 0;
 
 export default class extends Controller {
   // Define the values that can be passed to the controller
@@ -12,21 +15,33 @@ export default class extends Controller {
   static targets = ['globus', 'sortKey']
 
   // Declare the class variables
-  map = null
-  hoveredStateId = null
+  map = null;
+  hoveredStateId = null;
 
-  connect () {
+
+  connect() {
     // Initial map on home page with fill, hover, and click to show page features
-    this.mapInitialize()
-    this.mapLoad()
+    mobileView = window.innerWidth < 769;
+    this.mapInitialize();
+    this.mapLoad();
   }
-  mapInitialize () {
+  mapInitialize() {
+    let mapTarget = this.globusTarget.classList;
+
+    //If user has already clicked on homepage explore.
+    //Replace locale storage with query
     if (localStorage.repeater === 'true') {
-      document.querySelector('.banner-content').style.opacity = 0
-      let landing_info = document.querySelector('.landing-info')
-      landing_info.remove()
-      this.globusTarget.classList.add('map-full')
-      this.globusTarget.classList.remove('map-banner')
+      document.querySelector(".banner-content").style.opacity = 0;
+      document.querySelector(".landing-info").remove();
+
+      if (mobileView) {
+        mapTarget.add("map-mobile");
+      }
+      else {
+        mapTarget.add("map-full");
+        document.querySelector(".sort").classList.replace("sort-mobile", "sort-desktop");
+      }
+      this.globusTarget.classList.remove("map-banner");
       //Clear session storage of user selections on refresh or reload
       sessionStorage.clear()
     }
@@ -34,15 +49,21 @@ export default class extends Controller {
     let zoom = 0
     let pitch = 0
     if (localStorage.repeater === undefined) {
-      center = [139.697988, 35.685098]
-      zoom = 4.99
-      pitch = 65
-    } else {
-      center = [139.749888, 35.639098]
-      zoom = 10.4
-      pitch = 20
+      center = [138.685098, 35.685098];
+      zoom = 4;
+      pitch = 65;
     }
-    mapboxgl.accessToken = this.apiKeyValue // Set the Mapbox access token
+    else if (mobileView) {
+      center = [139.749888, 35.649098];
+      zoom = 9.4;
+      pitch = 20;
+    }
+    else {
+      center = [139.749888, 35.639098];
+      zoom = 10.4;
+      pitch = 20;
+    }
+    mapboxgl.accessToken = this.apiKeyValue; // Set the Mapbox access token
     this.map = new mapboxgl.Map({
       container: this.globusTarget, // Set the map container
       style: 'mapbox://styles/timchap96/cleky3zxc000g01mxat00cwa8', // Set the map style
@@ -389,12 +410,11 @@ export default class extends Controller {
   }
   userStep () {
     if (localStorage.repeater === 'true') {
-      this.map.setLayoutProperty('wards-fill', 'visibility', 'visible')
-      this.map.setLayoutProperty('wards-outline', 'visibility', 'visible')
-      // this.map.setLayoutProperty('ward-extrusion', 'visibility', 'visible');
-      document.querySelector('.sort').style.opacity = 0.6
-      let bannerContent = document.querySelector('.banner-content')
-      bannerContent.remove()
+      this.map.setLayoutProperty('wards-fill', 'visibility', 'visible');
+      this.map.setLayoutProperty('wards-outline', 'visibility', 'visible');
+
+      let bannerContent = document.querySelector(".banner-content");
+      bannerContent.remove();
       this.map.resize()
     } else {
       let bannerContent = document.querySelector('.banner-content')
@@ -409,8 +429,8 @@ export default class extends Controller {
     const customMarker = document.createElement('div')
     customMarker.innerHTML = this.userValue.marker_html
 
-    new mapboxgl.Marker(customMarker)
-      .setLngLat(this.userValue.coord)
-      .addTo(this.map)
-  }
+  //   new mapboxgl.Marker(customMarker)
+  //     .setLngLat(this.userValue.coord)
+  //     .addTo(this.map)
+  // }
 }
