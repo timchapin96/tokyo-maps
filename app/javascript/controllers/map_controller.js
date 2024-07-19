@@ -1,29 +1,55 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = {
-    apiKey: String, // a string value for the API key
-    // areas: Array, // an array of areas
-    // user: Object
-  }
+
   static targets = ['globus', 'sortKey']
 
-  connect() {
+  async connect() {
+
     const mobileView = {
       center: [139.749888, 35.649098],
       zoom: 9.4,
       pitch: 20
     }
-    this.mapInitialize(mobileView);
-    this.mapLoad();
+
+    // Load the API key and then initialize the map
+    await this.loadApiKey().then(apiKey => {
+      if (apiKey) {
+        this.mapInitialize(mobileView, apiKey);
+        this.mapLoad();
+      }
+    });
 
       // this.userStep()
       // this.hover()
       // this.#addUserToMap()
   }
 
-  mapInitialize(viewSetting) {
-    mapboxgl.accessToken = this.apiKeyValue; // Set the Mapbox access token
+  async loadApiKey() {
+    //Fetch API key from backend
+    try {
+      const response = await fetch('/api/v1/maps/api_key', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      //Throw error if failed response
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.api_key;
+    } catch (error) {
+      console.error('Error fetching API key:', error);
+      return null;
+    }
+  }
+
+
+  mapInitialize(viewSetting, mapApiKey) {
+    mapboxgl.accessToken = mapApiKey; // Set the Mapbox access token
     this.map = new mapboxgl.Map({
       container: 'map', // Set the map container
       style: 'mapbox://styles/timchap96/cleky3zxc000g01mxat00cwa8', // Set the map style
@@ -105,5 +131,10 @@ export default class extends Controller {
       }
     }
     return firstSymbolId
+  }
+
+  sort (sortTarget, sortValue, sortSafety) {
+    console.log("Sort in map");
+    // this.addSortLayers(sortKey, '-sort')
   }
 }

@@ -1,3 +1,11 @@
-<div class="map_box_container">
-  <div id="map" data-controller="map" data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"></div>
+<div class="map_box_container" data-controller="map">
+  <div id="map"></div>
+</div>
+<div class="sort-container" data-controller="sort">
+  <button data-action="click->sort#sort click->map#sort" data-sort-sort-value="1ldk">1LDK</button>
+  <button data-action="click->sort#sort" data-sort-sort-value="2ldk">2LDK</button>
+  <button data-action="click->sort#sort" data-sort-sort-value="3ldk">3LDK</button>
+  <button data-action="click->sort#sort" data-sort-sort-value="safety">Safety</button>
+  <button data-action="click->sort#sort" data-sort-sort-value="pets">Pets</button>
+  <button data-action="click->sort#sort" data-sort-sort-value="IntSchools">International Schools</button>
 </div>
