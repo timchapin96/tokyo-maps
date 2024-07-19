@@ -4,18 +4,29 @@ export default class extends Controller {
 
   static targets = ['globus', 'sortKey']
 
+  //Initialize map functions
+  //
+  //
   async connect() {
 
-    const mobileView = {
+
+    //Set mobile or desktop view
+    const mobileSettings = {
       center: [139.749888, 35.649098],
       zoom: 9.4,
       pitch: 20
     }
+    const desktopSettings = {
+      center: [139.749888, 35.639098],
+      zoom: 10.4,
+      pitch: 20,
+    }
+    const viewSettings = window.innerWidth < 769 ? mobileSettings : desktopSettings;
 
     // Load the API key and then initialize the map
     await this.loadApiKey().then(apiKey => {
       if (apiKey) {
-        this.mapInitialize(mobileView, apiKey);
+        this.mapInitialize(viewSettings, apiKey);
         this.mapLoad();
       }
     });
@@ -132,9 +143,68 @@ export default class extends Controller {
     }
     return firstSymbolId
   }
+  //
+  //
 
-  sort (sortTarget, sortValue, sortSafety) {
-    console.log("Sort in map");
-    // this.addSortLayers(sortKey, '-sort')
+
+  //Sort functions
+  //
+  //
+  sort (event) {
+    const sortVal = event.target.dataset.sortSortValue
+    console.log(sortVal);
+    this.addSortLayers(sortVal, '-sort')
   }
+
+  addSortLayers (sortVal, type) {
+    //remove any previously added sort layers
+    this.removeSortLayers()
+    let firstSymbolId = this.findLabels()
+
+    //Add sort fill layers to map
+    this.map.addLayer(
+      {
+        id: `wards${type}-fill`, // Add a new layer with ID "ward-sort-fill"
+        type: 'fill', // The layer type is "fill", which will fill with a color
+        source: 'wards',
+        layout: {
+          visibility: 'visible' // Set the layer visibility to "visible"
+        },
+        paint: {
+          'fill-color': [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            ['get', 'hover-color'],
+            ['get', `${sortVal}`]
+          ],
+          'fill-opacity': 1
+        }
+      },
+      firstSymbolId
+    )
+    //Add outline layer
+    this.map.addLayer(
+      {
+        id: `wards${type}-outline`,
+        type: 'line',
+        source: 'wards',
+        layout: {},
+        paint: {
+          'line-color': 'black',
+          'line-width': 3,
+          'line-opacity': 0.7
+        }
+      },
+      firstSymbolId
+    )
+  }
+  removeSortLayers () {
+    if (this.map.getLayer('wards-sort-fill')) {
+      // Check if a layer called "ward-sort-fill" already exists in the map
+      this.map.removeLayer('wards-sort-fill') // If it does, remove it
+      this.map.removeLayer('wards-sort-outline')
+    }
+  }
+  //
+  //
 }

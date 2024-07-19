@@ -1,11 +1,12 @@
-<div class="map_box_container" data-controller="map">
+<div class="map_box_container">
   <div id="map"></div>
 </div>
-<div class="sort-container" data-controller="sort">
-  <button data-action="click->sort#sort click->map#sort" data-sort-sort-value="1ldk">1LDK</button>
-  <button data-action="click->sort#sort" data-sort-sort-value="2ldk">2LDK</button>
-  <button data-action="click->sort#sort" data-sort-sort-value="3ldk">3LDK</button>
-  <button data-action="click->sort#sort" data-sort-sort-value="safety">Safety</button>
-  <button data-action="click->sort#sort" data-sort-sort-value="pets">Pets</button>
-  <button data-action="click->sort#sort" data-sort-sort-value="IntSchools">International Schools</button>
+<div class="sort-container" data-controller="sort map">
+  <%# TODO- improve the naming convention of the sort vals %>
+  <button data-action="click->sort#sort click->map#sort" data-sort-sort-value="one_ldk_sort_color">1LDK</button>
+  <button data-action="click->sort#sort click->map#sort" data-sort-sort-value="two_ldk_sort_color">2LDK</button>
+  <button data-action="click->sort#sort click->map#sort" data-sort-sort-value="three_ldk_sort_color">3LDK</button>
+  <button data-action="click->sort#sort click->map#sort" data-sort-sort-value="safety_sort_color">Safety</button>
+  <button data-action="click->sort#sort click->map#sort" data-sort-sort-value="pet_sort_color">Pets</button>
+  <button data-action="click->sort#sort click->map#sort" data-sort-sort-value="international_schools_sort_color">International Schools</button>
 </div>

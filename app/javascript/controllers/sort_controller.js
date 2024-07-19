@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   connect () {
-    console.log('We stimming')
+
   }
   sort (event) {
     //On button click grab the sortValue associated with that button
@@ -17,9 +17,6 @@ export default class extends Controller {
     fetch(`/sort/${sortValue}`, {
       headers: { Accept: 'application/json' }
     }).then(response => response.json())
-    .then(data => {
-      console.log(data);
-    })
     .catch(error => {
       console.error('Error fetching sort data', error)
     })
