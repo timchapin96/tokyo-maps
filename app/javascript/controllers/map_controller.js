@@ -1,29 +1,66 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = {
-    apiKey: String, // a string value for the API key
-    // areas: Array, // an array of areas
-    // user: Object
-  }
+
   static targets = ['globus', 'sortKey']
 
-  connect() {
-    const mobileView = {
+  //Initialize map functions
+  //
+  //
+  async connect() {
+
+
+    //Set mobile or desktop view
+    const mobileSettings = {
       center: [139.749888, 35.649098],
       zoom: 9.4,
       pitch: 20
     }
-    this.mapInitialize(mobileView);
-    this.mapLoad();
+    const desktopSettings = {
+      center: [139.749888, 35.639098],
+      zoom: 10.4,
+      pitch: 20,
+    }
+    const viewSettings = window.innerWidth < 769 ? mobileSettings : desktopSettings;
+
+    // Load the API key and then initialize the map
+    await this.loadApiKey().then(apiKey => {
+      if (apiKey) {
+        this.mapInitialize(viewSettings, apiKey);
+        this.mapLoad();
+      }
+    });
 
       // this.userStep()
       // this.hover()
       // this.#addUserToMap()
   }
 
-  mapInitialize(viewSetting) {
-    mapboxgl.accessToken = this.apiKeyValue; // Set the Mapbox access token
+  async loadApiKey() {
+    //Fetch API key from backend
+    try {
+      const response = await fetch('/api/v1/maps/api_key', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      //Throw error if failed response
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.api_key;
+    } catch (error) {
+      console.error('Error fetching API key:', error);
+      return null;
+    }
+  }
+
+
+  mapInitialize(viewSetting, mapApiKey) {
+    mapboxgl.accessToken = mapApiKey; // Set the Mapbox access token
     this.map = new mapboxgl.Map({
       container: 'map', // Set the map container
       style: 'mapbox://styles/timchap96/cleky3zxc000g01mxat00cwa8', // Set the map style
@@ -106,4 +143,68 @@ export default class extends Controller {
     }
     return firstSymbolId
   }
+  //
+  //
+
+
+  //Sort functions
+  //
+  //
+  sort (event) {
+    const sortVal = event.target.dataset.sortSortValue
+    console.log(sortVal);
+    this.addSortLayers(sortVal, '-sort')
+  }
+
+  addSortLayers (sortVal, type) {
+    //remove any previously added sort layers
+    this.removeSortLayers()
+    let firstSymbolId = this.findLabels()
+
+    //Add sort fill layers to map
+    this.map.addLayer(
+      {
+        id: `wards${type}-fill`, // Add a new layer with ID "ward-sort-fill"
+        type: 'fill', // The layer type is "fill", which will fill with a color
+        source: 'wards',
+        layout: {
+          visibility: 'visible' // Set the layer visibility to "visible"
+        },
+        paint: {
+          'fill-color': [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            ['get', 'hover-color'],
+            ['get', `${sortVal}`]
+          ],
+          'fill-opacity': 1
+        }
+      },
+      firstSymbolId
+    )
+    //Add outline layer
+    this.map.addLayer(
+      {
+        id: `wards${type}-outline`,
+        type: 'line',
+        source: 'wards',
+        layout: {},
+        paint: {
+          'line-color': 'black',
+          'line-width': 3,
+          'line-opacity': 0.7
+        }
+      },
+      firstSymbolId
+    )
+  }
+  removeSortLayers () {
+    if (this.map.getLayer('wards-sort-fill')) {
+      // Check if a layer called "ward-sort-fill" already exists in the map
+      this.map.removeLayer('wards-sort-fill') // If it does, remove it
+      this.map.removeLayer('wards-sort-outline')
+    }
+  }
+  //
+  //
 }

@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
   root "wards#index"
+  #custom sort route
+  get 'sort/:sortVal' => 'wards#sort'
+
+  #API routes
+  #
+  namespace :api do
+    namespace :v1 do
+      get 'maps/api_key'
+    end
+  end
 end
