@@ -4,11 +4,13 @@ export default class extends Controller {
 
   static targets = ['globus', 'sortKey']
 
+  //Readonly MapBox API key.
+
   //Initialize map functions
   //
   //
   async connect() {
-
+    const mapboxKey = "pk.eyJ1IjoidGltY2hhcDk2IiwiYSI6ImNseXdmb3YzNjFpY3oyanM2bG52M2JpOXMifQ.5q9X3hm62kg4VRhZBR18hQ";
 
     //Set mobile or desktop view
     const mobileSettings = {
@@ -36,31 +38,9 @@ export default class extends Controller {
       // this.#addUserToMap()
   }
 
-  async loadApiKey() {
-    //Fetch API key from backend
-    try {
-      const response = await fetch('/api/v1/maps/api_key', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      //Throw error if failed response
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
 
-      const data = await response.json();
-      return data.api_key;
-    } catch (error) {
-      console.error('Error fetching API key:', error);
-      return null;
-    }
-  }
-
-
-  mapInitialize(viewSetting, mapApiKey) {
-    mapboxgl.accessToken = mapApiKey; // Set the Mapbox access token
+  mapInitialize(viewSetting) {
+    mapboxgl.accessToken = mapboxKey; // Set the Mapbox access token
     this.map = new mapboxgl.Map({
       container: 'map', // Set the map container
       style: 'mapbox://styles/timchap96/cleky3zxc000g01mxat00cwa8', // Set the map style
