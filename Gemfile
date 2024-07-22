@@ -46,6 +46,9 @@ gem "bootsnap", require: false
 
 gem "sassc"
 
+gem 'sass-rails', '>= 6'
+
+
 
 # Use Sass to process CSS
 # gem "sassc-rails"
