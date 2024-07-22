@@ -1,14 +1,16 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-
   static targets = ['globus', 'sortKey']
+
+  //Readonly MapBox API key.
 
   //Initialize map functions
   //
   //
-  async connect() {
-
+  async connect () {
+    const mapboxKey =
+      'pk.eyJ1IjoidGltY2hhcDk2IiwiYSI6ImNseXdmb3YzNjFpY3oyanM2bG52M2JpOXMifQ.5q9X3hm62kg4VRhZBR18hQ'
 
     //Set mobile or desktop view
     const mobileSettings = {
@@ -19,48 +21,21 @@ export default class extends Controller {
     const desktopSettings = {
       center: [139.749888, 35.639098],
       zoom: 10.4,
-      pitch: 20,
+      pitch: 20
     }
-    const viewSettings = window.innerWidth < 769 ? mobileSettings : desktopSettings;
+    const viewSettings =
+      window.innerWidth < 769 ? mobileSettings : desktopSettings
 
-    // Load the API key and then initialize the map
-    await this.loadApiKey().then(apiKey => {
-      if (apiKey) {
-        this.mapInitialize(viewSettings, apiKey);
-        this.mapLoad();
-      }
-    });
+    this.mapInitialize(viewSettings, mapboxKey)
+    this.mapLoad()
 
-      // this.userStep()
-      // this.hover()
-      // this.#addUserToMap()
+    // this.userStep()
+    // this.hover()
+    // this.#addUserToMap()
   }
 
-  async loadApiKey() {
-    //Fetch API key from backend
-    try {
-      const response = await fetch('/api/v1/maps/api_key', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      //Throw error if failed response
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data.api_key;
-    } catch (error) {
-      console.error('Error fetching API key:', error);
-      return null;
-    }
-  }
-
-
-  mapInitialize(viewSetting, mapApiKey) {
-    mapboxgl.accessToken = mapApiKey; // Set the Mapbox access token
+  mapInitialize (viewSetting, mapboxKey) {
+    mapboxgl.accessToken = mapboxKey // Set the Mapbox access token
     this.map = new mapboxgl.Map({
       container: 'map', // Set the map container
       style: 'mapbox://styles/timchap96/cleky3zxc000g01mxat00cwa8', // Set the map style
@@ -86,8 +61,7 @@ export default class extends Controller {
         'space-color': 'rgb(11, 11, 25)', // Background color
         'star-intensity': 0.6 // Background star brightness (default 0.35 at low zooms )
       })
-      this.hoveredStateId = null,
-      this.addLayers('white', 'black', '')
+      ;(this.hoveredStateId = null), this.addLayers('white', 'black', '')
     })
   }
 
@@ -146,13 +120,12 @@ export default class extends Controller {
   //
   //
 
-
   //Sort functions
   //
   //
   sort (event) {
     const sortVal = event.target.dataset.sortSortValue
-    console.log(sortVal);
+    console.log(sortVal)
     this.addSortLayers(sortVal, '-sort')
   }
 

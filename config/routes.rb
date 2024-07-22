@@ -5,9 +5,4 @@ Rails.application.routes.draw do
 
   #API routes
   #
-  namespace :api do
-    namespace :v1 do
-      get 'maps/api_key'
-    end
-  end
 end
