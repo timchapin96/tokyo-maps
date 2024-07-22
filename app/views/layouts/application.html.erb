@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TokyoMapsNew</title>
+    <title>TokyoMaps</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <link rel="preload" href="<%= asset_path 'application.css' %>" as="style">
+    <%= stylesheet_link_tag 'application', 'data-turbo-track': 'reload' %>
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css' rel='stylesheet' />
