@@ -1,4 +1,4 @@
-/* @import './map.css'; */
+@import './map.css';
 
 body {
   margin: 0;
@@ -9,11 +9,11 @@ body {
   position: absolute;
 }
 
-.map_box_container {
+/* .map_box_container {
   width: 100svw;
   height: 70svh;
 }
 #map {
   width: 100svw;
   height: 70svh;
-}
+} */
