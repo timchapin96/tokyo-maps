@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   connect () {
-
+    console.log("Connected to sort");;
   }
   sort (event) {
     //On button click grab the sortValue associated with that button
@@ -10,7 +10,7 @@ export default class extends Controller {
 
     //Construct new URL with the sort value and push to window history
     //This prevents the default reload while still maintaining sort in the params
-    const url = new URL(window.location)
+    const url = new URL(window.location.href)
     url.searchParams.set('sort', sortValue)
     window.history.pushState({}, '', url)
 

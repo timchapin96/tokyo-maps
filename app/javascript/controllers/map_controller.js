@@ -3,38 +3,55 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = ['globus', 'sortKey']
 
-  //Readonly MapBox API key.
-
   //Initialize map functions
   //
   //
   async connect () {
-    const mapboxKey =
-      'pk.eyJ1IjoidGltY2hhcDk2IiwiYSI6ImNseXdmb3YzNjFpY3oyanM2bG52M2JpOXMifQ.5q9X3hm62kg4VRhZBR18hQ'
+    try {
+      //Readonly MapBox API key.
+      //Set mobile or desktop view
+      const mobileSettings = {
+        center: [139.749888, 35.649098],
+        zoom: 9.4,
+        pitch: 20
+      }
+      const desktopSettings = {
+        center: [139.749888, 35.639098],
+        zoom: 10.4,
+        pitch: 20
+      }
+      const viewSettings =
+        window.innerWidth < 769 ? mobileSettings : desktopSettings
+      const mapboxKey =
+        'pk.eyJ1IjoidGltY2hhcDk2IiwiYSI6ImNseXdmb3YzNjFpY3oyanM2bG52M2JpOXMifQ.5q9X3hm62kg4VRhZBR18hQ'
 
-    //Set mobile or desktop view
-    const mobileSettings = {
-      center: [139.749888, 35.649098],
-      zoom: 9.4,
-      pitch: 20
+      //Check for sort params
+      const initialSortVal = await this.getSearchParams()
+
+      await this.mapInitialize(viewSettings, mapboxKey)
+
+      //This is a mapbox function
+      //On map load perform the following operations
+      this.map.on('load', () => {
+        //Call map load to add 1. geojson source, 2. map fog 3. initial layers
+        this.mapLoad()
+        // If url contains sort val add to map
+        if (initialSortVal) {
+          this.addSortLayers(initialSortVal, '-sort')
+        }
+      })
+    } catch (error) {
+      console.error('An error occurred:', error)
     }
-    const desktopSettings = {
-      center: [139.749888, 35.639098],
-      zoom: 10.4,
-      pitch: 20
-    }
-    const viewSettings =
-      window.innerWidth < 769 ? mobileSettings : desktopSettings
-
-    this.mapInitialize(viewSettings, mapboxKey)
-    this.mapLoad()
-
-    // this.userStep()
-    // this.hover()
-    // this.#addUserToMap()
   }
 
-  mapInitialize (viewSetting, mapboxKey) {
+  async getSearchParams () {
+    const url = new URL(window.location.href)
+    const initialSortVal = url.searchParams.get('sort')
+    return initialSortVal
+  }
+
+  async mapInitialize (viewSetting, mapboxKey) {
     mapboxgl.accessToken = mapboxKey // Set the Mapbox access token
     this.map = new mapboxgl.Map({
       container: 'map', // Set the map container
@@ -47,27 +64,26 @@ export default class extends Controller {
     })
   }
 
-  mapLoad () {
-    this.map.on('load', () => {
-      // Add source for ward shapes
-      this.map.addSource('wards', {
-        type: 'geojson',
-        data: 'tokyo.geojson'
-      })
-      this.map.setFog({
-        color: 'rgb(186, 210, 235)', // Lower atmosphere
-        'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
-        'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
-        'space-color': 'rgb(11, 11, 25)', // Background color
-        'star-intensity': 0.6 // Background star brightness (default 0.35 at low zooms )
-      })
-      ;(this.hoveredStateId = null), this.addLayers('white', 'black', '')
+  async mapLoad () {
+    // Add source for ward shapes
+    this.map.addSource('wards', {
+      type: 'geojson',
+      data: 'tokyo.geojson'
     })
+    this.map.setFog({
+      color: 'rgb(186, 210, 235)', // Lower atmosphere
+      'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
+      'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
+      'space-color': 'rgb(11, 11, 25)', // Background color
+      'star-intensity': 0.6 // Background star brightness (default 0.35 at low zooms )
+    })
+    ;(this.hoveredStateId = null), this.addLayers('white', 'black', '')
   }
 
-  addLayers (baseColor, hoverColor, type) {
-    // this.removeSortLayers()
+  async addLayers (baseColor, hoverColor, type) {
+    this.removeSortLayers()
     let firstSymbolId = this.findLabels()
+
     this.map.addLayer(
       {
         id: `wards${type}-fill`,
@@ -117,31 +133,35 @@ export default class extends Controller {
     }
     return firstSymbolId
   }
+
   //
   //
 
   //Sort functions
   //
   //
-  sort (event) {
+  async sort (event) {
     const sortVal = event.target.dataset.sortSortValue
-    console.log(sortVal)
     this.addSortLayers(sortVal, '-sort')
   }
 
-  addSortLayers (sortVal, type) {
+  async addSortLayers (sortVal, type) {
     //remove any previously added sort layers
     this.removeSortLayers()
-    let firstSymbolId = this.findLabels()
-
+    const firstSymbolId = this.findLabels()
     //Add sort fill layers to map
+    this.addSortLayersToMap(sortVal, type, firstSymbolId)
+
+  }
+
+  addSortLayersToMap (sortVal, type, firstSymbolId) {
     this.map.addLayer(
       {
-        id: `wards${type}-fill`, // Add a new layer with ID "ward-sort-fill"
-        type: 'fill', // The layer type is "fill", which will fill with a color
+        id: `wards${type}-fill`,
+        type: 'fill',
         source: 'wards',
         layout: {
-          visibility: 'visible' // Set the layer visibility to "visible"
+          visibility: 'visible'
         },
         paint: {
           'fill-color': [
@@ -155,7 +175,6 @@ export default class extends Controller {
       },
       firstSymbolId
     )
-    //Add outline layer
     this.map.addLayer(
       {
         id: `wards${type}-outline`,
@@ -171,6 +190,7 @@ export default class extends Controller {
       firstSymbolId
     )
   }
+
   removeSortLayers () {
     if (this.map.getLayer('wards-sort-fill')) {
       // Check if a layer called "ward-sort-fill" already exists in the map

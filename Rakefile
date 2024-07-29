@@ -4,3 +4,14 @@
 require_relative "config/application"
 
 Rails.application.load_tasks
+
+namespace :boot do
+  desc "Precompile assets and start Rails server"
+  task start_server: :environment do
+    # Precompile assets
+    Rake::Task['assets:precompile'].invoke
+
+    # Start Rails server
+    exec "rails s"
+  end
+end
