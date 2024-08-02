@@ -32,11 +32,12 @@ export default class extends Controller {
 
       //This is a mapbox function
       //On map load perform the following operations
+      let sortValid = await this.sortValid(initialSortVal)
       this.map.on('load', () => {
         //Call map load to add 1. geojson source, 2. map fog 3. initial layers
         this.mapLoad()
         // If url contains sort val add to map
-        if (initialSortVal) {
+        if(sortValid) {
           this.addSortLayers(initialSortVal, '-sort')
         }
       })
@@ -140,9 +141,24 @@ export default class extends Controller {
   //Sort functions
   //
   //
+
+  async sortValid(sortVal) {
+    const validSortVals = ["one_ldk_sort_color", "two_ldk_sort_color", "three_ldk_sort_color", "safety_sort_color", "pet_sort_color", "international_schools_sort_color"]
+    let validSort = false
+    validSortVals.forEach((val) => {
+      if(sortVal === val) {
+        validSort = true
+        return validSort
+      }
+    })
+    return validSort
+  }
+
   async sort (event) {
     const sortVal = event.target.dataset.sortSortValue
-    this.addSortLayers(sortVal, '-sort')
+    if(this.sortValid(sortVal)) {
+      this.addSortLayers(sortVal, '-sort')
+    }
   }
 
   async addSortLayers (sortVal, type) {
