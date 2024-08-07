@@ -10,19 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_30_081517) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_07_052314) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "wards", force: :cascade do |t|
-    t.string "name", default: "", null: false
-    t.string "summary", default: "", null: false
+    t.string "name"
     t.integer "one_ldk_avg_rent"
     t.integer "two_ldk_avg_rent"
     t.integer "three_ldk_avg_rent"
-    t.integer "safety"
-    t.integer "population"
+    t.float "safety_rating"
     t.float "pet_percentage"
+    t.integer "international_schools"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_wards_on_name", unique: true
+    t.index ["name"], name: "index_wards_on_name"
   end
 
 end

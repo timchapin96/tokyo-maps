@@ -1,6 +1,7 @@
 class WardsController < ApplicationController
   def index
     @wards = Ward.all
+    p @wards
   end
   def sort
     sort_param = sort_params[:sortVal]
